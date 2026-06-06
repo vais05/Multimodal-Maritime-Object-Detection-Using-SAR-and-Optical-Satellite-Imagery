@@ -1,0 +1,2 @@
+# Multimodal-Maritime-Object-Detection-Using-SAR-and-Optical-Satellite-Imagery
+A multimodal ship detection framework combining SAR and optical satellite imagery is proposed for reliable maritime surveillance. ResNet50 and CSPDarknet extract features from SAR and optical images, which are fused using CrossModal Attention. An FPN-YOLO detector identifies ships. Performance is evaluated using Precision, Recall, IoU, and mAP.
