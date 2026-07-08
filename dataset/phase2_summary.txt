@@ -1,0 +1,53 @@
+PHASE 2 - ANNOTATION & LABEL GENERATION - SUMMARY REPORT
+Run at: 2026-04-22 15:07:24
+
+PROJECT: Multimodal Maritime Object Detection (SAR + Optical)
+Team: 22UG0005 | Panel: 5 | Guide: Mr. Nagesh Koundinya Subbanna
+
+-- WHAT ANNOTATION DOES --
+Converts RLE ship masks in CSV to YOLO .txt bounding box files.
+One .txt file per image, one line per ship.
+YOLO format: class x_center y_center w_norm h_norm (normalised 0-1)
+Background images (no ships) get EMPTY .txt files.
+One label file is SHARED by both SAR and optical (same scene).
+
+-- CONFIGURATION --
+CSV input          : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\train_labels_clean.csv
+RLE decode size    : 768x768 (original Airbus)
+YOLO normalise     : 320x320 (Phase 1 output)
+Min box size       : 2 px
+
+-- ANNOTATION PIPELINE --
+  Step 1: Read EncodedPixels from CSV
+  Step 2: Decode RLE -> flat array (height x width)
+  Step 3: Reshape -> 2D binary mask (column-major / Fortran order)
+  Step 4: Find connected components (each blob = one ship)
+  Step 5: cv2.boundingRect() -> pixel-space (x, y, w, h)
+  Step 6: Scale from RLE space (768) to target space (320)
+  Step 7: Normalise to YOLO format [0, 1]
+  Step 8: Write .txt file
+
+-- RESULTS --
+  Total label files written  : 193,460
+  Images with ships          : 42,556
+  Background images (empty)  : 150,904
+  Total ship boxes written   : 81,779
+  Failed annotations         : 0
+  Avg ships per image        : 1.92
+  Max ships in one image     : 20
+  Avg box width (px)         : 21.9
+  Avg box height (px)        : 17.8
+
+-- OUTPUT --
+  Labels folder              : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\labels
+  Label file naming          : 00001.txt, 00002.txt ...
+  Corresponds to             : 00001_opt.png / 00001_sar.png
+
+-- PANEL DEMO IMAGES SAVED --
+  1. annotated_pairs_panel.png        (8 pairs with boxes on both OPT+SAR)
+  2. annotation_pipeline_explanation.png (full 5-step pipeline diagram)
+  3. label_statistics.png             (statistics dashboard)
+
+-- NEXT STEP --
+Run PHASE3_DatasetLoading.ipynb
+Input: preprocessed images + labels/ folder

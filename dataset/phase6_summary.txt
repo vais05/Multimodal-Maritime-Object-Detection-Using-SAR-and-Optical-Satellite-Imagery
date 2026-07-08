@@ -1,0 +1,46 @@
+=================================================================
+PHASE 6 - YOLO DETECTION HEAD - SUMMARY REPORT
+Run at: 2026-05-01 14:21:19
+=================================================================
+
+PROJECT: Multimodal Maritime Object Detection (SAR + Optical)
+Team: 22UG0005 | Panel: 5 | Guide: Mr. Nagesh Koundinya Subbanna
+
+-- WHAT PHASE 6 DOES --
+Converts fused feature maps from Phase 5 into actual ship predictions.
+Three parallel YOLO heads, one per pyramid level.
+Each head predicts bounding boxes + confidence for a ship size range.
+
+-- THREE DETECTION HEADS --
+head_P3 (stride  8, grid 40x40): small ships  [(10, 6), (18, 10), (28, 16)]
+head_P4 (stride 16, grid 20x20): medium ships [(40, 24), (55, 35), (70, 48)]
+head_P5 (stride 32, grid 10x10): large ships  [(90, 60), (130, 85), (180, 120)]
+
+-- OUTPUT FORMAT --
+pred_P3 : [B, 18, 40,  40 ]  raw logits
+pred_P4 : [B, 18, 20, 20]  raw logits
+pred_P5 : [B, 18, 10, 10]  raw logits
+
+Per prediction: tx, ty, tw, th, obj, cls
+Total candidates per image: 6,300
+After NMS (conf>0.5, iou<0.45): only best boxes kept
+
+-- PARAMETERS --
+Total head params  : 1,784,886
+Trainable params   : 1,784,886
+
+-- WHERE MODEL IS TRAINED --
+Phase 7 (next): Training Loop
+Dataset: 193,460 paired SAR+optical images from Phases 0-2
+Subset : 9,000 train + 1,000 val (stratified from Phase 3)
+Epochs : 20 (CPU hardware constraint)
+Loss   : L_cls (BCE) + L_bbox (CIoU) + L_obj (BCE)
+Model learns from pred_P3/P4/P5 compared to Phase 2 labels
+
+-- PANEL DEMO IMAGES SAVED --
+1. anchor_boxes_visualisation.png  (3 heads x 3 anchors at scale)
+
+-- NEXT STEP --
+Phase 7: Training Loop + Loss Functions
+Phases 4A + 5 + 6 assembled into one model and trained.
+=================================================================

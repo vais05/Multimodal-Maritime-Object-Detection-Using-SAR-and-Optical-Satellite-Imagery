@@ -1,0 +1,52 @@
+=================================================================
+PHASE 5 - MULTIMODAL FUSION (CrossModalAttention + FPN) - SUMMARY
+Run at: 2026-04-30 12:32:38
+=================================================================
+
+PROJECT: Multimodal Maritime Object Detection (SAR + Optical)
+Team: 22UG0005 | Panel: 5 | Guide: Mr. Nagesh Koundinya Subbanna
+
+-- WHAT PHASE 5 DOES --
+Fuses SAR and optical feature maps using CrossModalAttention
+at each pyramid level (P3, P4, P5), then enriches with FPN.
+
+-- WHY MID-LEVEL FUSION --
+Early fusion: incompatible pixel distributions -> accuracy drops
+Late fusion: no cross-modal interaction -> misses modality synergy
+Mid-level: each backbone specialises first, then fuse semantically
+
+-- HOW CrossModalAttention WORKS --
+1. Project SAR + optical to 256ch (common representation)
+2. Reshape spatial dims to token sequence [B, H*W, 256]
+3. Q from SAR, K/V from optical -> multi-head cross-attention
+4. Residual: add attention output to SAR projection
+5. Gate: concat SAR-enhanced + optical -> 1x1 conv -> 256ch
+
+-- HOW FPN WORKS --
+Top-down: P5 upsample -> add P4 -> upsample -> add P3
+Gives P3 (small ships) access to P5 global context
+
+-- CONFIGURATION --
+Attention heads  : 8
+Output channels  : 256 (all 3 levels)
+
+-- INPUTS (from Phase 4A ResNet50 + CSPDarknet) --
+Fs_P3 [B,512,40,40]  Fs_P4 [B,1024,20,20]  Fs_P5 [B,2048,10,10]
+Fo_P3 [B,256,40,40]  Fo_P4 [B,512,20,20]  Fo_P5 [B,1024,10,10]
+
+-- OUTPUTS (to Phase 6 Detection Heads) --
+F_P3 [B,256,40,40]  stride 8  -> small ship YOLO head
+F_P4 [B,256,20,20]  stride 16 -> medium ship YOLO head
+F_P5 [B,256,10,10]  stride 32 -> large ship YOLO head
+
+-- RESULTS --
+Fusion params    : 4,532,736
+Trainable params : 4,532,736
+NaN in outputs   : None
+All assertions   : PASSED
+Saved weights    : phase5_fusion_init.pth
+
+-- NEXT STEP --
+Phase 6: YOLO Detection Heads (3 heads at P3/P4/P5)
+Input: F_P3 [B,256,40,40]  F_P4 [B,256,20,20]  F_P5 [B,256,10,10]
+=================================================================

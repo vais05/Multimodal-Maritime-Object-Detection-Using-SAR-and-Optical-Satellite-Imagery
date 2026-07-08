@@ -1,0 +1,35 @@
+=================================================================
+PHASE 4A - DUAL-STREAM BACKBONE (METHODOLOGY) - SUMMARY
+Run at: 2026-04-25 11:40:39
+=================================================================
+
+PROJECT: Multimodal Maritime Object Detection (SAR + Optical)
+Team: 22UG0005 | Panel: 5 | Guide: Mr. Nagesh Koundinya Subbanna
+
+-- SAR BACKBONE: ResNet50 --
+Input  : [B, 1, 320, 320]  (1-channel SAR, normalised)
+Mod    : First conv 3ch -> 1ch (pretrained weights adapted)
+Frozen : stem + layer1 (first 2 blocks)
+Output : Fs_P3 [B, 512,  40, 40]  stride 8
+         Fs_P4 [B, 1024, 20, 20]  stride 16
+         Fs_P5 [B, 2048, 10, 10]  stride 32
+Total params     : 23,501,760
+Trainable params : 23,282,688
+
+-- OPTICAL BACKBONE: CSPDarknet --
+Input  : [B, 3, 320, 320]  (3-channel RGB optical)
+Frozen : stem + stage1 (first 2 blocks)
+Output : Fo_P3 [B, 256,  40, 40]  stride 8
+         Fo_P4 [B, 512,  20, 20]  stride 16
+         Fo_P5 [B, 1024, 10, 10]  stride 32
+Total params     : 16,778,720
+Trainable params : 16,589,952
+
+-- FREEZING SCHEDULE --
+Epochs 1-10  : early blocks frozen (detection head stabilises)
+Epoch 10+    : all layers unfrozen (full fine-tuning)
+
+-- NEXT STEP --
+Phase 5: CrossModalAttention Fusion + FPN Neck
+Input: Fs_P3/P4/P5 + Fo_P3/P4/P5
+=================================================================

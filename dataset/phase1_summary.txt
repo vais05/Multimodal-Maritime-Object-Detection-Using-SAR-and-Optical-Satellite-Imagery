@@ -1,0 +1,59 @@
+=================================================================
+PHASE 1 - PREPROCESSING - SUMMARY REPORT
+Run at: 2026-04-21 22:42:05
+=================================================================
+
+PROJECT: Multimodal Maritime Object Detection (SAR + Optical)
+Team: 22UG0005 | Panel: 5 | Guide: Mr. Nagesh Koundinya Subbanna
+
+-- CONFIGURATION --
+Target image size        : 320x320 px
+Lee filter kernel        : 5x5
+Brightness jitter        : +-20%
+Contrast jitter          : +-20%
+Crop scale               : 90%
+Geometric augmentation   : NONE (label safety)
+
+-- SAR PIPELINE (applied to train AND test) --
+  Step 1: Radiometric calibration  (log-transform)
+  Step 2: Lee filter (5x5)         (speckle reduction)
+  Step 3: Min-max normalisation    (-> float32 [0,1])
+  Step 4: Resize bilinear          (-> target size)
+
+-- OPTICAL PIPELINE --
+  TRAIN: resize -> brightness jitter -> contrast jitter -> crop-resize -> normalise
+  TEST : resize -> normalise only (no augmentation on test)
+
+-- TRAIN RESULTS --
+  Pairs processed          : 193,460
+  Failures                 : 0
+  SAR mean before          : 88.71 / 255
+  SAR mean after           : 0.5476 [0-1]
+  SAR std before           : 37.65
+  SAR std after            : 0.1203
+  OPT mean before          : 68.09 / 255
+  OPT mean after           : 0.2612 [0-1]
+
+-- TEST RESULTS --
+  Pairs processed          : 15,606
+  Failures                 : 0
+  SAR mean before          : 81.97 / 255
+  SAR mean after           : 0.5242 [0-1]
+
+-- OUTPUT FOLDERS (all images saved to disk) --
+  preprocessed_train_OPTICAL : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\preprocessed_train_OPTICAL
+  preprocessed_train_SAR     : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\preprocessed_train_SAR
+  preprocessed_test_OPTICAL  : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\preprocessed_test_OPTICAL
+  preprocessed_test_SAR      : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\preprocessed_test_SAR
+
+-- PANEL DEMO IMAGES SAVED --
+  1. sar_preprocessing_steps.png      (4 SAR steps with histograms)
+  2. optical_preprocessing_steps.png  (4 optical steps with RGB histograms)
+  3. before_after_panel.png           (8 pairs before/after side by side)
+  4. geometry_safety_check.png        (proves no flip or rotation applied)
+  5. phase1_statistics_dashboard.png  (full statistics dashboard)
+
+-- NEXT STEP --
+Run PHASE2_Annotation.ipynb
+Input: preprocessed_train_OPTICAL/ + train_labels_clean.csv
+=================================================================

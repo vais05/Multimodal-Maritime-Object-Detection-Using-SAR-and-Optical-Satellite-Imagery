@@ -1,0 +1,51 @@
+PHASE 3 - DATASET LOADING - SUMMARY REPORT
+Run at: 2026-04-24 11:18:24
+
+PROJECT: Multimodal Maritime Object Detection (SAR + Optical)
+Team: 22UG0005 | Panel: 5 | Guide: Mr. Nagesh Koundinya Subbanna
+
+-- WHAT PHASE 3 DOES --
+Builds a PyTorch Dataset and DataLoader to serve batches of
+(SAR tensor, optical tensor, label tensor) to the training loop.
+Uses stratified sampling to balance ship vs background images.
+Splits into 90% train and 10% validation.
+
+-- WHY STRATIFIED SAMPLING --
+Full dataset: 42,556 ship images (22%), 150,904 background (78%)
+Without balancing, model would predict nothing and get 78% accuracy.
+Solution: force 50/50 with 5,000 ship + 5,000 background.
+
+-- DATASET CONFIGURATION --
+Total stratified samples : 10,000
+  Ship samples           : 5,000 (50%)
+  Background samples     : 5,000 (50%)
+Train samples            : 9,000 (90%)
+Val samples              : 1,000 (10%)
+Random seed              : 42
+
+-- DATALOADER CONFIGURATION --
+Batch size               : 4
+Num workers              : 0 (Windows multiprocessing limit)
+Pin memory               : False (False = CPU only)
+Train batches per epoch  : 2,250
+Val batches per epoch    : 250
+
+-- TENSOR SHAPES PER BATCH --
+SAR tensor     : [4, 1, 320, 320]  float32 [0,1]
+Optical tensor : [4, 3, 320, 320]  float32 [0,1]
+Labels         : list of 4 x [N, 5]  float32
+               : N = number of ships in that image
+               : 5 = [class, x_center, y_center, w, h]
+
+-- PERFORMANCE --
+Avg batch load time    : 0.1 ms
+Images per second      : 18.7
+Device                 : cpu
+
+-- PANEL DEMO IMAGES SAVED --
+  1. sample_batch_visualisation.png  (4 batch images with labels)
+  2. phase3_statistics_dashboard.png (full statistics)
+
+-- NEXT STEP --
+Run PHASE4_Backbone.ipynb
+train_loader and val_loader are ready to feed the model.

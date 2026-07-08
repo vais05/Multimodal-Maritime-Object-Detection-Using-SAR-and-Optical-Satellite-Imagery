@@ -1,0 +1,66 @@
+=================================================================
+PHASE 7 - LOSS FUNCTION & TRAINING - SUMMARY REPORT
+Run at: 2026-05-11 23:55:02
+=================================================================
+
+PROJECT: Multimodal Maritime Object Detection (SAR + Optical)
+Team: 22UG0005 | Panel: 5 | Guide: Mr. Nagesh Koundinya Subbanna
+
+-- DATASET --
+Source             : Airbus Ship Detection Dataset
+Train images       : 9,000  (stratified 50/50 ship/background)
+Val images         : 1,000
+Batch size         : 4  (effective 8 with grad accum)
+
+-- LOSS FUNCTION --
+L_total = 5.0*L_bbox + 1.0*L_obj + 0.5*L_cls
+L_bbox  : CIoU loss (box regression)
+L_obj   : Binary Cross-Entropy (objectness)
+L_cls   : Binary Cross-Entropy (ship class)
+No-obj weight : 0.5
+
+-- OPTIMISER --
+AdamW  LR=0.001  weight_decay=0.01
+CosineAnnealingLR: 0.001 -> 1e-6 over 20 epochs
+Grad accumulation : 2 steps
+Backbone unfreeze : epoch 10
+
+-- TRAINING RESULTS (from CSV) --
+Total epochs logged : 19
+Best val mAP@0.5    : 91.71%  (epoch 19)
+Final train loss    : 3.5041
+Final bbox loss     : 0.7824
+Final obj loss      : 0.2384
+Final cls loss      : 0.0001
+Final LR            : 0.00000100
+
+-- EPOCH-BY-EPOCH RESULTS --
+  Epoch  1: loss=8.7652  mAP=21.45%  LR=0.000994
+  Epoch  2: loss=8.1243  mAP=35.21%  LR=0.000976
+  Epoch  3: loss=7.6431  mAP=46.82%  LR=0.000946
+  Epoch  4: loss=7.2142  mAP=57.48%  LR=0.000905
+  Epoch  5: loss=6.8743  mAP=65.22%  LR=0.000854
+  Epoch  6: loss=6.5214  mAP=72.18%  LR=0.000794
+  Epoch  7: loss=6.2141  mAP=78.14%  LR=0.000727
+  Epoch  8: loss=5.9124  mAP=82.43%  LR=0.000655
+  Epoch  9: loss=5.6542  mAP=86.12%  LR=0.000579
+  Epoch 10: loss=5.2487  mAP=88.34%  LR=0.000098
+  Epoch 11: loss=4.9824  mAP=89.56%  LR=0.000092
+  Epoch 12: loss=4.7341  mAP=90.12%  LR=0.000083
+  Epoch 13: loss=4.5124  mAP=90.64%  LR=0.000071
+  Epoch 14: loss=4.3012  mAP=91.03%  LR=0.000058
+  Epoch 15: loss=4.1425  mAP=91.34%  LR=0.000043
+  Epoch 16: loss=3.9841  mAP=91.52%  LR=0.000030
+  Epoch 17: loss=3.8422  mAP=91.64%  LR=0.000018
+  Epoch 18: loss=3.7214  mAP=91.68%  LR=0.000009
+  Epoch 19: loss=3.5041  mAP=91.71%  LR=0.000001 <- BEST
+
+-- SAVED FILES --
+Best model         : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\checkpoints\best_model.pth
+Training log CSV   : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\training_logs\training_log.csv
+Checkpoints dir    : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\checkpoints
+
+-- NEXT STEPS --
+Phase 8: Evaluation (mAP, Precision, Recall on val set)
+Phase 9: Inference (detect ships on new images)
+=================================================================
