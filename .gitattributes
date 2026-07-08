@@ -1,0 +1,2 @@
+*.pth filter=lfs diff=lfs merge=lfs -text
+dataset/checkpoints/*.onnx filter=lfs diff=lfs merge=lfs -text

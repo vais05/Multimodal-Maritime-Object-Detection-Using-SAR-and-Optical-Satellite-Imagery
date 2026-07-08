@@ -1,0 +1,26 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Models
+*.pth
+*.pt
+*.ckpt
+*.h5
+
+# Dataset outputs
+dataset/training_logs/
+dataset/evaluation_results/
+dataset/phase*_outputs/
+
+# Frontend
+FRONTEND/node_modules/
+FRONTEND/.env
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
