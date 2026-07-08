@@ -1,0 +1,44 @@
+=================================================================
+PHASE 4 (UPDATED) - DUAL-STREAM BACKBONE - SUMMARY REPORT
+Run at: 2026-04-29 00:09:40
+=================================================================
+
+PROJECT: Multimodal Maritime Object Detection (SAR + Optical)
+Team: 22UG0005 | Panel: 5 | Guide: Mr. Nagesh Koundinya Subbanna
+
+-- SAR BACKBONE: EfficientNet-B4 (upgraded from ResNet50) --
+Why better:
+  SE blocks: learns to suppress SAR speckle noise channels
+  MBConv: 30% faster on CPU, same receptive field
+  Compound scaling: better accuracy per parameter
+  Fewer params: less overfitting on 9,000 train images
+
+Input   : [B, 1, 320, 320]  (1-channel SAR)
+Fs_P3   : [B, 56, 40,  40 ]  stride 8
+Fs_P4   : [B, 160, 20, 20]  stride 16
+Fs_P5   : [B, 448, 10, 10]  stride 32
+Total params     : 16,741,352
+Trainable params : 16,670,440
+
+-- OPTICAL BACKBONE: CSPDarknet (unchanged, already optimal) --
+Input   : [B, 3, 320, 320]  (3-channel RGB optical)
+Fo_P3   : [B, 256, 40,  40 ]  stride 8
+Fo_P4   : [B, 512, 20, 20]  stride 16
+Fo_P5   : [B, 1024, 10, 10]  stride 32
+Total params     : 16,778,720
+Trainable params : 16,589,952
+
+-- COMBINED --
+Total params         : 33,520,072
+Trainable params     : 33,260,392
+vs methodology total : ~45,000,000
+Saving              : ~11,479,928 parameters
+
+-- FREEZING SCHEDULE --
+Epochs 1-10  : early blocks frozen (stabilise detection head)
+Epoch 10+    : all layers unfrozen (full fine-tuning)
+
+-- NEXT STEP --
+Phase 5: CrossModalAttention Fusion + FPN Neck
+Fs_P3/P4/P5 and Fo_P3/P4/P5 -> fusion -> 256ch feature maps
+=================================================================
