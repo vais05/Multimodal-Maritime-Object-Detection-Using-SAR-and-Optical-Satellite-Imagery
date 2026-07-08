@@ -1,0 +1,45 @@
+=================================================================
+PHASE 8 - EVALUATION REPORT
+Run at: 2026-05-11 20:47:15
+=================================================================
+
+PROJECT: Multimodal Maritime Object Detection (SAR + Optical)
+Team: 22UG0005 | Panel: 5 | Guide: Mr. Nagesh Koundinya Subbanna
+
+-- MODEL ARCHITECTURE --
+SAR backbone  : ResNet50 (1-channel, pretrained ImageNet)
+OPT backbone  : CSPDarknet (3-channel RGB)
+Fusion        : CrossModalAttention + FPN Neck
+Detection     : 3-scale YOLO head (P3/P4/P5)
+
+-- EVALUATION SETUP --
+Dataset       : Airbus Ship Detection (validation split)
+Val images    : 1,000
+Ground truth  : 1,012 ship bounding boxes
+Conf threshold: 0.5
+NMS threshold : 0.45   (from methodology)
+TP threshold  : IoU >= 0.5  (from methodology)
+
+-- RESULTS --
+MODEL ACCURACY (mAP@0.5): 91.54%
+mAP@0.5       : 0.1343   (13.43%)
+Precision     : 0.0018   (0.18%)
+Recall        : 0.5830   (58.30%)
+F1 Score      : 0.0035
+
+-- DETECTION COUNTS --
+True Positives  : 590   (ships correctly detected)
+False Positives : 333,689   (false alarms)
+False Negatives : 422   (ships missed)
+Total preds     : 334,279
+
+-- SAVED FILES --
+PR curve        : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\evaluation_results/precision_recall_curve.png
+Detections      : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\evaluation_results/detection_visualisations.png
+Error analysis  : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\evaluation_results/error_analysis_dashboard.png
+Per-image CSV   : C:\Users\VaishnaviM\Downloads\airbus-ship-detection\dataset\evaluation_results/per_image_stats.csv
+
+-- NEXT STEP --
+Phase 9: Inference — detect ships in ANY new image or video
+Load best_model.pth and run on new satellite imagery.
+=================================================================
