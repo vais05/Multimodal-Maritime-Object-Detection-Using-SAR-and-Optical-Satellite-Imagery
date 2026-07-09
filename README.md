@@ -1,6 +1,5 @@
 # Multimodal Maritime Object Detection Using SAR and Optical Satellite Imagery
 
----
 
 ## 1. What This Project Does
 
