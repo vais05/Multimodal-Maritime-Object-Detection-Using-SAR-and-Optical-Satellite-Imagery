@@ -205,7 +205,7 @@ These are documented as **hardware-driven adaptations**, not changes to the unde
 
 ---
 
-## 8. Future Scope (from the report)
+## 8. Future Scope 
 
 - Train on real-world SAR datasets (not simulated) for better generalization.
 - Full GPU-scale training at 640×640 with the full dataset.
@@ -213,7 +213,3 @@ These are documented as **hardware-driven adaptations**, not changes to the unde
 - Transformer-based backbones/heads (ViT, DETR, Swin).
 - Real-time / edge deployment, and fusion with AIS (Automatic Identification System) data for dark-ship detection and anomaly/threat analysis.
 - Temporal/video-based tracking across sequential SAR frames.
-
----
-
-*This README was generated from the project report (`005.pdf`) and methodology document (`methodology_updated.pdf`) for Team 22UG0005's B.Tech final-year project.*
