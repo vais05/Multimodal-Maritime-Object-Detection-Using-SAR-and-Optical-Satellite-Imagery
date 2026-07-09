@@ -1,10 +1,5 @@
 # Multimodal Maritime Object Detection Using SAR and Optical Satellite Imagery
 
-**Team 22UG0005 | Panel 5**
-**Guide:** Mr. Nagesh Koundinya Subbanna
-**Team members:** CH Hari Sankar (BL.EN.U4AIE22109), Krishna Gayatri Patra (BL.EN.U4AIE22125), Vaishnavi Mohite (BL.EN.U4AIE22131)
-Amrita School of Computing, Bengaluru — B.Tech CSE (AI), May 2026
-
 ---
 
 ## 1. What This Project Does
